@@ -10,35 +10,47 @@ function convert() {
   const participants = nameMatch[2];
   const messages = [...raw.matchAll(/\[Message\]Sender:(.+?)\|Time:(.+?)\|Side:(left|right)\|Content:(.+)/g)];
 
-  let body = `<lightboard-kakaochat name="${title}" participants="${participants}">\n`;
+  let chatHTML = `<div class="chat-container">
+  <div class="chat-header">${title} (${participants}명)</div>`;
 
   for (const [_, sender, time, side, content] of messages) {
-    body += `[Message]Sender:${sender}|Time:${time}|Side:${side}|Content:${content}\n`;
+    chatHTML += `
+  <div class="message ${side}">
+    ${side === "left" ? `<div class="sender">${sender}</div>` : ""}
+    <div class="bubble">${content}</div>
+    <div class="time">${time}</div>
+  </div>`;
   }
 
-  body += `</lightboard-kakaochat>`;
+  chatHTML += `\n</div>`;
 
-  const fullHtml = `<!DOCTYPE html>
+  const fullHTML = `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>${title}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-    lightboard-kakaochat { display: block; white-space: pre-line; font-family: monospace; background: #fff; padding: 20px; border: 1px solid #ccc; }
+    .chat-container { background: #ABC1D1; padding: 20px; border-radius: 8px; max-width: 700px; margin: 20px auto; }
+    .chat-header { font-weight: bold; margin-bottom: 20px; }
+    .message { margin-bottom: 16px; display: flex; flex-direction: column; }
+    .sender { font-size: 0.85em; color: #444; margin-bottom: 4px; }
+    .bubble { padding: 10px 16px; border-radius: 16px; max-width: 80%; line-height: 1.4; }
+    .left .bubble { background: white; color: black; align-self: flex-start; }
+    .right .bubble { background: #FFDE00; color: black; align-self: flex-end; }
+    .time { font-size: 0.75em; color: #666; margin-top: 4px; align-self: flex-end; }
   </style>
 </head>
-<body data-id="lightboard-kakaochat">
-${body}
+<body>
+${chatHTML}
 </body>
 </html>`;
 
-  document.getElementById("result").innerText = fullHtml;
+  document.getElementById("result").textContent = fullHTML;
 }
 
 function copyToClipboard() {
-  const text = document.getElementById("result").innerText;
+  const text = document.getElementById("result").textContent;
   navigator.clipboard.writeText(text).then(() => {
     alert("복사 완료!");
   }, () => {
