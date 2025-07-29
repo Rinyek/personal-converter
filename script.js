@@ -11,13 +11,17 @@ function convert() {
   const messages = [...raw.matchAll(/\[Message\]Sender:(.+?)\|Time:(.+?)\|Side:(left|right)\|Content:(.+)/g)];
 
   let messageHTML = "";
+  let lastSender = null;
+
   for (const [_, sender, time, side, content] of messages) {
+    const showSender = side === "left" && sender !== lastSender;
     messageHTML += `
     <div class="message ${side}">
-      ${side === "left" ? `<div class="sender">${sender}</div>` : ""}
+      ${showSender ? `<div class="sender">${sender}</div>` : ""}
       <div class="bubble">${content}</div>
       <div class="time">${time}</div>
     </div>`;
+    if (side === "left") lastSender = sender;
   }
 
   const fullHTML = `<!DOCTYPE html>
