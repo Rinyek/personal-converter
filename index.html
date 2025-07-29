@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>HTML 변환기</title>
+  <title>HTML 코드 출력기</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>💬 카카오톡 대화 → HTML 텍스트 변환기</h1>
-  <textarea id="input" rows="20" cols="80" placeholder="형식에 맞는 대화 내역 붙여넣기"></textarea>
+  <h1>📄 카톡 대화 → HTML 코드 변환기</h1>
+  <textarea id="input" rows="20" cols="80" placeholder="[Message]Sender:... 형식 붙여넣기"></textarea>
   <br>
   <button onclick="convert()">변환</button>
   <button onclick="copyToClipboard()">복사</button>
   <hr>
-  <pre id="result" style="white-space: pre-wrap; background:#eee; padding:20px; border-radius:8px;"></pre>
+  <pre id="result" style="white-space: pre-wrap; background:#eee; padding:20px; border-radius:8px; overflow-x: auto;"></pre>
   <script src="script.js"></script>
 </body>
 </html>

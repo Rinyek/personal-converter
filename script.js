@@ -10,19 +10,15 @@ function convert() {
   const participants = nameMatch[2];
   const messages = [...raw.matchAll(/\[Message\]Sender:(.+?)\|Time:(.+?)\|Side:(left|right)\|Content:(.+)/g)];
 
-  let chatHTML = `<div class="chat-container">
-  <div class="chat-header">${title} (${participants}명)</div>`;
-
+  let messageHTML = "";
   for (const [_, sender, time, side, content] of messages) {
-    chatHTML += `
-  <div class="message ${side}">
-    ${side === "left" ? `<div class="sender">${sender}</div>` : ""}
-    <div class="bubble">${content}</div>
-    <div class="time">${time}</div>
-  </div>`;
+    messageHTML += `
+    <div class="message ${side}">
+      ${side === "left" ? `<div class="sender">${sender}</div>` : ""}
+      <div class="bubble">${content}</div>
+      <div class="time">${time}</div>
+    </div>`;
   }
-
-  chatHTML += `\n</div>`;
 
   const fullHTML = `<!DOCTYPE html>
 <html lang="ko">
@@ -42,7 +38,9 @@ function convert() {
   </style>
 </head>
 <body>
-${chatHTML}
+  <div class="chat-container">
+    <div class="chat-header">${title} (${participants}명)</div>${messageHTML}
+  </div>
 </body>
 </html>`;
 
